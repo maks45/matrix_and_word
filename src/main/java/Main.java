@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -35,8 +36,9 @@ public class Main {
                     chains.add(chain);
                 } else {
                     for (List<Position> chain : chains) {
-                        if (chain.size() == i &&
-                                chain.get(i - 1).isNear(position)) {
+                        if (chain.size() == i
+                                && chain.stream().noneMatch(p -> p.equals(position))
+                                && chain.get(i - 1).isNear(position)) {
                             chain.add(position);
                         }
                     }
@@ -83,6 +85,20 @@ public class Main {
         @Override
         public String toString() {
             return "[" + x + ", " + y + ']';
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Position position = (Position) o;
+            return x == position.x &&
+                    y == position.y;
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(x, y);
         }
     }
 }
