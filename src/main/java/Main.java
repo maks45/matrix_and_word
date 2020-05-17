@@ -14,7 +14,6 @@ public class Main {
         findWord("QLGNAEKIRLRNGEAE", "AE");
     }
 
-
     private static void findWord(String matrix, String word) {
         List<Position> result = findCharsPosition(word.toCharArray(), createMatrix(matrix));
         if (result.size() == 0) {
