@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -29,17 +30,15 @@ public class SearchWord {
                     + matrix + " not valid value");
             return;
         }
-        List<Position> result = findCharsPosition(word.toCharArray(), createMatrix(matrix));
-        if (result.size() == 0) {
-            System.out.println("word positions can't be found");
-            return;
-        }
-        System.out.println(result.stream()
-                .map(Position::toString)
-                .collect(Collectors.joining("->")));
+        System.out.println(findCharsPosition(word.toCharArray(),
+                createMatrix(matrix))
+                .map(positions -> positions.stream()
+                        .map(Position::toString)
+                        .collect(Collectors.joining("->")))
+                .orElse("word positions can't be found"));
     }
 
-    private List<Position> findCharsPosition(char[] word, char[][] matrix) {
+    private Optional<List<Position>> findCharsPosition(char[] word, char[][] matrix) {
         List<List<Position>> chains = new ArrayList<>();
         for (int i = 0; i < word.length; i++) {
             for (Position position : getCharPositions(matrix, word[i])) {
@@ -60,8 +59,7 @@ public class SearchWord {
         }
         return chains.stream()
                 .filter(l -> l.size() == word.length)
-                .findFirst()
-                .orElse(new ArrayList<>());
+                .findFirst();
     }
 
     private List<Position> getCharPositions(char[][] matrix, char letter) {
