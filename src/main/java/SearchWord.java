@@ -7,16 +7,16 @@ import java.util.stream.IntStream;
 
 public class SearchWord {
 
-    public void run(){
+    public void run() {
         Scanner scanner = new Scanner(System.in);
-        while (true){
+        while (true) {
             System.out.println("enter matrix and word trough space or 'q' to exit");
             String input = scanner.nextLine();
-            if(input.equals("q")){
+            if (input.equals("q")) {
                 break;
             }
             String[] params = input.split(" ");
-            if (params.length > 1){
+            if (params.length > 1) {
                 findWord(params[0], params[1]);
             }
         }
