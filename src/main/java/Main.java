@@ -12,17 +12,25 @@ public class Main {
         findWord("QLGNAEKIRLRNGEAE", "IKEA");
         findWord("QLGNAEKIRLRNGEAE", "ENINGL");
         findWord("QLGNAEKIRLRNGEAE", "AE");
+        findWord("QLGNAEKIRLRNssGEAE", "AE");
+        findWord("QLGNAEKIRLRNGEAE", "AE45");
     }
 
     private static void findWord(String matrix, String word) {
+        int matrixSize = (int) Math.sqrt(matrix.length());
+        if (matrixSize * matrixSize != matrix.length()) {
+            System.out.println("matrix should be square N * N : "
+                    + matrix + " not valid value");
+            return;
+        }
         List<Position> result = findCharsPosition(word.toCharArray(), createMatrix(matrix));
         if (result.size() == 0) {
             System.out.println("word positions can't be found");
-        } else {
-            System.out.println(result.stream()
-                    .map(Position::toString)
-                    .collect(Collectors.joining("->")));
+            return;
         }
+        System.out.println(result.stream()
+                .map(Position::toString)
+                .collect(Collectors.joining("->")));
     }
 
     private static List<Position> findCharsPosition(char[] word, char[][] matrix) {
