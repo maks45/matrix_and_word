@@ -47,7 +47,8 @@ public class SearchWord {
                     chain.add(position);
                     chains.add(chain);
                 } else {
-                    for (int j=0; j < chains.size(); j++){
+                    int j =0;
+                    while(j < chains.size()){
                         List<Position> chain = chains.get(j);
                         if (chain.size() >= i
                                 && chain.stream().noneMatch(p -> p.equals(position))
@@ -60,6 +61,7 @@ public class SearchWord {
                                 chains.add(nChain);
                             }
                         }
+                        j++;
                     }
                 }
             }
