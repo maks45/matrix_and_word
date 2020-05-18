@@ -7,13 +7,12 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 public class SearchWord implements Runnable{
-    private int matrixSize;
 
     @Override
     public void run() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
-            System.out.println("enter matrix and word trough space or 'q' to exit");
+            System.out.println("enter matrix and word through space or 'q' to exit");
             String input = scanner.nextLine();
             if (input.equals("q")) {
                 break;
@@ -26,7 +25,7 @@ public class SearchWord implements Runnable{
     }
 
     private String findWord(String matrix, String word) {
-        matrixSize = (int) Math.sqrt(matrix.length());
+        int matrixSize = (int) Math.sqrt(matrix.length());
         if (matrixSize * matrixSize != matrix.length()) {
              return "matrix should be square N * N : "
                     + matrix + " not valid value";
@@ -72,14 +71,15 @@ public class SearchWord implements Runnable{
 
     private List<Position> getCharPositions(char[][] matrix, char letter) {
         List<Position> positions = new ArrayList<>();
-        IntStream.range(0, matrixSize).forEach(
-                i -> IntStream.range(0, matrixSize)
+        IntStream.range(0, matrix.length).forEach(
+                i -> IntStream.range(0, matrix[i].length)
                         .filter(j -> matrix[i][j] == letter)
                         .forEach(j -> positions.add(new Position(i, j))));
         return positions;
     }
 
     private char[][] createMatrix(String source) {
+        int matrixSize = (int) Math.sqrt(source.length());
         char[][] matrix = new char[matrixSize][matrixSize];
         IntStream.range(0, source.length())
                 .forEach(i -> matrix[i / matrixSize][i % matrixSize] = source.charAt(i));
