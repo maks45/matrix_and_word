@@ -8,8 +8,6 @@ import java.util.stream.IntStream;
 
 public class SearchWord implements Runnable{
     private int matrixSize;
-    private char[][] matrix;
-    private char[][] word;
 
     @Override
     public void run() {
