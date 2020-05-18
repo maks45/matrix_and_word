@@ -47,11 +47,18 @@ public class SearchWord {
                     chain.add(position);
                     chains.add(chain);
                 } else {
-                    for (List<Position> chain : chains) {
-                        if (chain.size() == i
+                    for (int j=0; j < chains.size(); j++){
+                        List<Position> chain = chains.get(j);
+                        if (chain.size() >= i
                                 && chain.stream().noneMatch(p -> p.equals(position))
                                 && chain.get(i - 1).isNear(position)) {
-                            chain.add(position);
+                            if(chain.size() == i) {
+                                chain.add(position);
+                            }else {
+                                List<Position> nChain = new ArrayList<>(chain);
+                                nChain.set(i, position);
+                                chains.add(nChain);
+                            }
                         }
                     }
                 }
