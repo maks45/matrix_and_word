@@ -1,13 +1,14 @@
+
+import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-public class SearchWord {
+public class SearchWord implements Runnable{
 
+    @Override
     public void run() {
         Scanner scanner = new Scanner(System.in);
         while (true) {
@@ -17,28 +18,25 @@ public class SearchWord {
                 break;
             }
             String[] params = input.split(" ");
-            if (params.length > 1) {
-                findWord(params[0], params[1]);
+            if (params.length == 2) {
+                System.out.println(findWord(params[0], params[1]));
             }
         }
     }
 
-    private void findWord(String matrix, String word) {
+    private String findWord(String matrix, String word) {
         int matrixSize = (int) Math.sqrt(matrix.length());
         if (matrixSize * matrixSize != matrix.length()) {
-            System.out.println("matrix should be square N * N : "
-                    + matrix + " not valid value");
-            return;
+             return "matrix should be square N * N : "
+                    + matrix + " not valid value";
         }
-        System.out.println(findCharsPosition(word.toCharArray(),
-                createMatrix(matrix))
-                .map(positions -> positions.stream()
-                        .map(Position::toString)
-                        .collect(Collectors.joining("->")))
-                .orElse("word positions can't be found"));
+        String result = findCharsPosition(word.toCharArray(), createMatrix(matrix)).stream()
+                .map(Position::toString)
+                .collect(Collectors.joining("->"));
+        return result.length() > 0 ? result : "word positions can't be found";
     }
 
-    private Optional<List<Position>> findCharsPosition(char[] word, char[][] matrix) {
+    private List<Position> findCharsPosition(char[] word, char[][] matrix) {
         List<List<Position>> chains = new ArrayList<>();
         for (int i = 0; i < word.length; i++) {
             for (Position position : getCharPositions(matrix, word[i])) {
@@ -68,7 +66,7 @@ public class SearchWord {
         }
         return chains.stream()
                 .filter(l -> l.size() == word.length)
-                .findFirst();
+                .findFirst().orElse(new ArrayList<>());
     }
 
     private List<Position> getCharPositions(char[][] matrix, char letter) {
@@ -88,13 +86,10 @@ public class SearchWord {
         return matrix;
     }
 
-    private static class Position {
-        private final int x;
-        private final int y;
+    private static class Position extends Point {
 
         public Position(int x, int y) {
-            this.x = x;
-            this.y = y;
+            super(x, y);
         }
 
         private boolean isNear(Position position) {
@@ -107,18 +102,5 @@ public class SearchWord {
             return "[" + x + ", " + y + ']';
         }
 
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (o == null || getClass() != o.getClass()) return false;
-            Position position = (Position) o;
-            return x == position.x &&
-                    y == position.y;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(x, y);
-        }
     }
 }
