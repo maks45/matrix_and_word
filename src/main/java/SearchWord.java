@@ -47,15 +47,15 @@ public class SearchWord {
                     chain.add(position);
                     chains.add(chain);
                 } else {
-                    int j =0;
-                    while(j < chains.size()){
+                    int j = 0;
+                    while (j < chains.size()) {
                         List<Position> chain = chains.get(j);
                         if (chain.size() >= i
                                 && chain.stream().noneMatch(p -> p.equals(position))
                                 && chain.get(i - 1).isNear(position)) {
-                            if(chain.size() == i) {
+                            if (chain.size() == i) {
                                 chain.add(position);
-                            }else {
+                            } else {
                                 List<Position> nChain = new ArrayList<>(chain);
                                 nChain.set(i, position);
                                 chains.add(nChain);
